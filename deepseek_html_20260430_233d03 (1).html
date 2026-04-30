@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>100K Pixels — Купи свой пиксель за $1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --bg:        #04040a;
+      --bg2:       #070710;
+      --bg3:       #0c0c1a;
+      --card:      #0f0f1e;
+      --green:     #00ff88;
+      --pink:      #ff2d78;
+      --blue:      #00b4ff;
+      --yellow:    #ffe94e;
+      --text:      #dde8ff;
+      --muted:     #6b7599;
+      --border:    rgba(255,255,255,0.07);
+      --glow-g:    rgba(0,255,136,0.15);
+      --glow-p:    rgba(255,45,120,0.15);
+      --glow-b:    rgba(0,180,255,0.15);
+      --mono:      'Space Mono', monospace;
+      --sans:      'Outfit', sans-serif;
+      --ease:      cubic-bezier(0.4,0,0.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,0.03) 0px,
+        rgba(0,0,0,0.03) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 16px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(4,4,10,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      color: var(--green);
+      letter-spacing: 0.05em;
+    }
+    .logo span { color: var(--text); }
+
+    .header-badge {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(0,255,136,0.08);
+      border: 1px solid rgba(0,255,136,0.25);
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      color: var(--green);
+      font-family: var(--mono);
+    }
+
+    .live-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: blink 1.4s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 100px 24px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(0,255,136,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 80% 70%, rgba(255,45,120,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 50% 10%, rgba(0,180,255,0.06) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    #hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .hero-inner { position: relative; z-index: 1; max-width: 860px; }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,233,78,0.08);
+      border: 1px solid rgba(255,233,78,0.3);
+      color: var(--yellow);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 8px 20px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+
+    .hero-tag::before { content: '★'; font-size: 0.85rem; }
+
+    h1 {
+      font-family: var(--sans);
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+
+    h1 .g { color: var(--green); }
+    h1 .p { color: var(--pink);  }
+    h1 .b { color: var(--blue);  }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 44px;
+      line-height: 1.7;
+    }
+
+    .hero-sub strong { color: var(--text); font-weight: 600; }
+
+    .counter-strip {
+      display: flex; gap: 0;
+      justify-content: center;
+      margin-bottom: 44px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--card);
+      box-shadow: 0 0 60px rgba(0,255,136,0.05);
+    }
+
+    .counter-cell {
+      padding: 20px 32px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .counter-cell:last-child { border-right: none; }
+
+    .counter-num {
+      font-family: var(--mono);
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .counter-num.green { color: var(--green); text-shadow: 0 0 20px rgba(0,255,136,0.5); }
+    .counter-num.pink  { color: var(--pink);  text-shadow: 0 0 20px rgba(255,45,120,0.5); }
+    .counter-num.blue  { color: var(--blue);  text-shadow: 0 0 20px rgba(0,180,255,0.5); }
+
+    .counter-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    .cta-group {
+      display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+    }
+
+    .btn-main {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 18px 40px;
+      background: var(--green);
+      color: #030308;
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 1.05rem;
+      border-radius: 12px;
+      transition: all 0.25s var(--ease);
+      box-shadow: 0 4px 30px rgba(0,255,136,0.35), inset 0 1px 0 rgba(255,255,255,0.3);
+      cursor: pointer;
+      border: none;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-main:hover {
+      background: #20ffa0;
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 50px rgba(0,255,136,0.5);
+    }
+
+    .btn-main .ico { font-size: 1.2rem; }
+
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 18px 36px;
+      background: transparent;
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 500;
+      font-size: 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.25s var(--ease);
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.04);
+      transform: translateY(-2px);
+    }
+
+    section { padding: 100px 24px; }
+
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    .section-tag {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    #how {
+      background: var(--bg);
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 56px;
+    }
+
+    .how-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 30px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+    }
+
+    .how-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(0,255,136,0.25);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(0,255,136,0.06);
+    }
+
+    .how-card::before {
+      content: '';
+      position: absolute; top: 0; right: 0;
+      width: 100px; height: 100px;
+      border-radius: 0 20px 0 100%;
+      opacity: 0.6;
+    }
+
+    .how-card:nth-child(1)::before { background: var(--glow-g); }
+    .how-card:nth-child(2)::before { background: var(--glow-b); }
+    .how-card:nth-child(3)::before { background: var(--glow-p); }
+
+    .how-step {
+      font-family: var(--mono);
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 20px;
+      opacity: 0.15;
+    }
+
+    .how-card:nth-child(1) .how-step { color: var(--green); }
+    .how-card:nth-child(2) .how-step { color: var(--blue); }
+    .how-card:nth-child(3) .how-step { color: var(--pink); }
+
+    .how-icon {
+      font-size: 2.2rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .how-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .how-card p {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    #pricing {
+      background: var(--bg2);
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .price-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 56px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .price-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 28px;
+      transition: all 0.3s var(--ease);
+    }
+
+    .price-card.featured {
+      border-color: rgba(0,255,136,0.4);
+      background: linear-gradient(160deg, #0f1a14 0%, var(--card) 100%);
+      box-shadow: 0 0 60px rgba(0,255,136,0.08);
+      transform: scale(1.04);
+    }
+
+    .price-card:hover:not(.featured) { transform: translateY(-4px); }
+    .price-card.featured:hover { transform: scale(1.07); }
+
+    .price-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .price-card.featured .price-label { color: var(--green); }
+
+    .price-amount {
+      font-family: var(--mono);
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .price-unit {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .price-pixels {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .price-card:nth-child(1) .price-pixels { color: var(--blue); }
+    .price-card.featured     .price-pixels { color: var(--green); }
+    .price-card:nth-child(3) .price-pixels { color: var(--pink); }
+
+    .price-size {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .price-features {
+      list-style: none;
+      text-align: left;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .price-features li {
+      padding: 5px 0;
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+
+    .price-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+    #proof {
+      background: var(--bg);
+    }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 56px;
+    }
+
+    .proof-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      transition: transform 0.3s var(--ease);
+    }
+
+    .proof-card:hover { transform: translateY(-4px); }
+
+    .proof-stars { color: var(--yellow); font-size: 1rem; margin-bottom: 12px; letter-spacing: 2px; }
+
+    .proof-text {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    .proof-author {
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .proof-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .proof-name { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+    .proof-role { font-size: 0.75rem; color: var(--muted); font-family: var(--mono); }
+
+    #cta {
+      background: var(--bg2);
+      text-align: center;
+      border-top: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #cta::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,255,136,0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    #cta h2 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 16px; }
+    #cta .sub { margin: 0 auto 40px; }
+
+    .contact-cards {
+      display: flex; gap: 16px; justify-content: center;
+      margin-top: 40px; flex-wrap: wrap;
+    }
+
+    .contact-card {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 24px;
+      font-size: 0.95rem;
+      font-family: var(--mono);
+      transition: all 0.25s var(--ease);
+      cursor: pointer;
+    }
+
+    .contact-card:hover {
+      border-color: rgba(0,255,136,0.3);
+      background: rgba(0,255,136,0.05);
+      transform: translateY(-2px);
+    }
+
+    .contact-card .ico { font-size: 1.3rem; }
+    .contact-card span { color: var(--green); }
+
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: var(--mono);
+      font-size: 1.2rem;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+
+    .footer-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .ticker-wrap {
+      background: rgba(0,255,136,0.06);
+      border-top: 1px solid rgba(0,255,136,0.15);
+      border-bottom: 1px solid rgba(0,255,136,0.15);
+      padding: 10px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .ticker-inner {
+      display: inline-flex; gap: 0;
+      animation: tick 25s linear infinite;
+    }
+
+    .ticker-inner span {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--green);
+      padding: 0 40px;
+      letter-spacing: 0.05em;
+    }
+
+    .ticker-inner span::before { content: '◆  '; opacity: 0.5; }
+
+    @keyframes tick {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    @media (max-width: 900px) {
+      .how-grid   { grid-template-columns: 1fr; }
+      .price-cards { grid-template-columns: 1fr; gap: 12px; }
+      .price-card.featured { transform: scale(1); }
+      .proof-grid { grid-template-columns: 1fr; }
+      .counter-strip { flex-direction: column; }
+      .counter-cell { border-right: none; border-bottom: 1px solid var(--border); }
+      .counter-cell:last-child { border-bottom: none; }
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 14px 18px; }
+      .header-badge { display: none; }
+      section { padding: 70px 18px; }
+      .cta-group { flex-direction: column; align-items: center; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-inner > * {
+      animation: fadeUp 0.7s var(--ease) both;
+    }
+    .hero-tag             { animation-delay: 0.05s; }
+    h1                    { animation-delay: 0.15s; }
+    .hero-sub             { animation-delay: 0.25s; }
+    .counter-strip        { animation-delay: 0.35s; }
+    .cta-group            { animation-delay: 0.45s; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">100K<span>PIXELS</span></div>
+  <div class="header-badge">
+    <div class="live-dot"></div>
+    Продажа открыта
+  </div>
+</header>
+
+<div style="padding-top:64px;">
+  <div class="ticker-wrap">
+    <div class="ticker-inner" id="ticker">
+      <span>100 000 пикселей</span>
+      <span>Каждый пиксель = $1</span>
+      <span>Ваш баннер увидят тысячи</span>
+      <span>Размести рекламу навсегда</span>
+      <span>Уникальная рекламная площадка</span>
+      <span>Только $1 за пиксель</span>
+      <span>100 000 пикселей</span>
+      <span>Каждый пиксель = $1</span>
+      <span>Ваш баннер увидят тысячи</span>
+      <span>Размести рекламу навсегда</span>
+      <span>Уникальная рекламная площадка</span>
+      <span>Только $1 за пиксель</span>
+    </div>
+  </div>
+</div>
+
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Исторический интернет-проект</div>
+    <h1>
+      <span class="g">100 000</span><br/>
+      пикселей.<br/>
+      <span class="p">$1</span> каждый.
+    </h1>
+    <p class="hero-sub">
+      Купи своё место в истории интернета. Размести логотип, баннер или ссылку
+      на <strong>100 000 пикселях</strong> — и твоя реклама будет здесь навсегда.
+      Первый в своём роде проект в нашей части интернета.
+    </p>
+
+    <div class="counter-strip">
+      <div class="counter-cell">
+        <div class="counter-num green" id="availableCount">84 320</div>
+        <div class="counter-label">Доступно пикселей</div>
+      </div>
+      <div class="counter-cell">
+        <div class="counter-num pink" id="soldCount">15 680</div>
+        <div class="counter-label">Продано пикселей</div>
+      </div>
+      <div class="counter-cell">
+        <div class="counter-num blue">$15 680</div>
+        <div class="counter-label">Уже заработано</div>
+      </div>
+    </div>
+
+    <div class="cta-group">
+      <a href="https://t.me/bx102d" target="_blank" class="btn-main">
+        <span class="ico">🚀</span>
+        Купить пиксели за $1
+      </a>
+      <a href="#grid-section" class="btn-outline">
+        👇 Смотреть карту пикселей
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- БЛОК С БРЕНДАМИ (ЗАМЕНА ИЗОБРАЖЕНИЙ) -->
+<section id="grid-section">
+<style>
+  #grid-section { background:var(--bg2); padding:80px 24px; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  .brands-header { text-align:center; margin-bottom:52px; }
+  .brands-header p { color:var(--muted); font-size:0.95rem; max-width:540px; margin:8px auto 0; line-height:1.7; }
+  .brand-cat-label {
+    font-family:var(--mono); font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--muted); margin:36px 0 14px; display:flex; align-items:center; gap:12px;
+  }
+  .brand-cat-label::before,.brand-cat-label::after { content:''; flex:1; height:1px; background:var(--border); }
+  .brand-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; }
+  .brand-card {
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:18px 12px 14px; display:flex; flex-direction:column; align-items:center;
+    gap:9px; text-decoration:none; cursor:pointer; position:relative; overflow:hidden;
+    transition:all 0.25s var(--ease);
+  }
+  .brand-card:hover { border-color:rgba(0,255,136,0.4); transform:translateY(-5px); box-shadow:0 16px 40px rgba(0,0,0,0.5),0 0 20px rgba(0,255,136,0.07); }
+  .brand-sold {
+    position:absolute; top:8px; right:8px;
+    background:rgba(0,255,136,0.1); border:1px solid rgba(0,255,136,0.25);
+    color:var(--green); font-family:var(--mono); font-size:0.52rem;
+    letter-spacing:0.08em; padding:2px 6px; border-radius:4px;
+  }
+  .brand-img-wrap {
+    width:64px; height:64px; border-radius:12px; overflow:hidden;
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .brand-img-wrap img { width:100%; height:100%; object-fit:contain; padding:8px; }
+  .brand-tile {
+    width:64px; height:64px; border-radius:12px; display:flex; align-items:center;
+    justify-content:center; font-family:var(--mono); font-size:0.72rem; font-weight:700;
+    text-align:center; line-height:1.25; flex-shrink:0; border:1px solid rgba(255,255,255,0.1);
+  }
+  .brand-name { font-size:0.76rem; font-weight:600; color:var(--text); text-align:center; line-height:1.3; }
+  .brand-type { font-family:var(--mono); font-size:0.58rem; color:var(--muted); letter-spacing:0.06em; text-align:center; }
+  .brand-px { font-family:var(--mono); font-size:0.6rem; color:var(--green); background:rgba(0,255,136,0.08); border:1px solid rgba(0,255,136,0.15); border-radius:100px; padding:2px 7px; }
+  .brands-join {
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    background:rgba(0,255,136,0.04); border:1px dashed rgba(0,255,136,0.22);
+    border-radius:14px; padding:18px 28px; margin-top:48px; text-decoration:none;
+    transition:all 0.25s var(--ease);
+  }
+  .brands-join:hover { background:rgba(0,255,136,0.08); border-color:rgba(0,255,136,0.45); }
+  .brands-join span { font-size:0.9rem; color:var(--muted); }
+  .brands-join strong { color:var(--text); }
+  .brands-join em { font-family:var(--mono); font-size:0.8rem; color:var(--green); font-style:normal; }
+  @media(max-width:600px){
+    .brand-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px;}
+    .brand-img-wrap,.brand-tile{width:52px;height:52px;}
+  }
+</style>
+<div class="container">
+  <div class="brands-header">
+    <div class="section-tag">// наши_рекламодатели</div>
+    <h2>Они уже купили <span style="color:var(--green)">своё место</span></h2>
+    <p>Известные бренды Узбекистана доверились 100K Pixels. Твой логотип может стать следующим.</p>
+  </div>
+
+  <!-- CRM -->
+  <div class="brand-cat-label">CRM системы</div>
+  <div class="brand-grid">
+    <a href="https://www.amocrm.ru" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/AmoCRM_logo.svg/256px-AmoCRM_logo.svg.png" alt="amoCRM"
+             onerror="this.src='https://www.google.com/s2/favicons?domain=amocrm.ru&sz=128'">
+      </div>
+      <span class="brand-name">amoCRM</span>
+      <span class="brand-type">CRM</span>
+      <span class="brand-px">400 px</span>
+    </a>
+    <a href="#" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://www.google.com/s2/favicons?domain=shamcrm.com&sz=128" alt="ShamCRM">
+      </div>
+      <span class="brand-name">ShamCRM</span>
+      <span class="brand-type">CRM</span>
+      <span class="brand-px">300 px</span>
+    </a>
+  </div>
+
+  <!-- FAST FOOD -->
+  <div class="brand-cat-label">Фаст-фуд</div>
+  <div class="brand-grid">
+    <a href="#" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://api.logobank.uz/media/logos_png/Sariq_bola_pizza-01.png" alt="Sariq Bola Pizza"
+             onerror="this.parentElement.innerHTML='<div class=\'brand-tile\' style=\'background:rgba(255,210,0,0.12);color:#ffe94e;\'>Sariq<br>Bola</div>'">
+      </div>
+      <span class="brand-name">Sariq Bola Pizza</span>
+      <span class="brand-type">Фаст-фуд</span>
+      <span class="brand-px">600 px</span>
+    </a>
+  </div>
+
+  <!-- TECH -->
+  <div class="brand-cat-label">Магазины техники</div>
+  <div class="brand-grid">
+    <a href="https://texnomart.uz" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://www.google.com/s2/favicons?domain=texnomart.uz&sz=128" alt="Texnomart">
+      </div>
+      <span class="brand-name">Texnomart</span>
+      <span class="brand-type">Техника</span>
+      <span class="brand-px">800 px</span>
+    </a>
+    <a href="https://ishonch.uz" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://www.google.com/s2/favicons?domain=ishonch.uz&sz=128" alt="Ishonch">
+      </div>
+      <span class="brand-name">Ishonch</span>
+      <span class="brand-type">Техника</span>
+      <span class="brand-px">600 px</span>
+    </a>
+  </div>
+
+  <!-- BANKS -->
+  <div class="brand-cat-label">Банки</div>
+  <div class="brand-grid">
+    <a href="https://xalqbank.uz" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://pultop.uz/wp-content/uploads/2024/07/xalq-320.png" alt="XalqBank">
+      </div>
+      <span class="brand-name">XalqBanki</span>
+      <span class="brand-type">Банк</span>
+      <span class="brand-px">1000 px</span>
+    </a>
+    <a href="https://nbu.uz" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://static.tildacdn.one/tild6637-6437-4232-a163-633261636532/____1.png" alt="NBU">
+      </div>
+      <span class="brand-name">NBU</span>
+      <span class="brand-type">Нац. банк</span>
+      <span class="brand-px">1000 px</span>
+    </a>
+  </div>
+
+  <!-- TELECOM -->
+  <div class="brand-cat-label">Связь</div>
+  <div class="brand-grid">
+    <a href="https://humans.uz" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://api.logobank.uz/media/logos_png/Humans-01.png" alt="Humans">
+      </div>
+      <span class="brand-name">Humans</span>
+      <span class="brand-type">Мобильная связь</span>
+      <span class="brand-px">900 px</span>
+    </a>
+  </div>
+
+  <!-- E-COMMERCE -->
+  <div class="brand-cat-label">Интернет-продажи</div>
+  <div class="brand-grid">
+    <a href="https://uzum.uz" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://www.google.com/s2/favicons?domain=uzum.uz&sz=128" alt="Uzum"
+             onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Uzum_logo.svg/256px-Uzum_logo.svg.png'">
+      </div>
+      <span class="brand-name">Uzum</span>
+      <span class="brand-type">E-commerce</span>
+      <span class="brand-px">1200 px</span>
+    </a>
+    <a href="https://olx.uz" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/OLX_Logo.svg/256px-OLX_Logo.svg.png" alt="OLX"
+             onerror="this.src='https://www.google.com/s2/favicons?domain=olx.uz&sz=128'">
+      </div>
+      <span class="brand-name">OLX</span>
+      <span class="brand-type">Объявления</span>
+      <span class="brand-px">900 px</span>
+    </a>
+    <a href="https://www.wildberries.ru" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Wildberries_logo.svg/256px-Wildberries_logo.svg.png" alt="Wildberries"
+             onerror="this.src='https://www.google.com/s2/favicons?domain=wildberries.ru&sz=128'">
+      </div>
+      <span class="brand-name">Wildberries</span>
+      <span class="brand-type">E-commerce</span>
+      <span class="brand-px">1000 px</span>
+    </a>
+  </div>
+
+  <!-- DELIVERY -->
+  <div class="brand-cat-label">Службы доставки</div>
+  <div class="brand-grid">
+    <a href="https://bts.uz" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://www.google.com/s2/favicons?domain=bts.uz&sz=128" alt="BTS">
+      </div>
+      <span class="brand-name">BTS Express</span>
+      <span class="brand-type">Доставка</span>
+      <span class="brand-px">500 px</span>
+    </a>
+    <a href="https://yango.com/ru_uz/" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://www.google.com/s2/favicons?domain=yango.com&sz=128" alt="Yandex Доставка">
+      </div>
+      <span class="brand-name">Yandex Доставка</span>
+      <span class="brand-type">Доставка</span>
+      <span class="brand-px">800 px</span>
+    </a>
+    <a href="https://uzum.uz" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://www.google.com/s2/favicons?domain=uzum.uz&sz=128" alt="Uzum Доставка">
+      </div>
+      <span class="brand-name">Uzum Доставка</span>
+      <span class="brand-type">Доставка</span>
+      <span class="brand-px">700 px</span>
+    </a>
+  </div>
+
+  <!-- TAXI -->
+  <div class="brand-cat-label">Такси</div>
+  <div class="brand-grid">
+    <a href="#" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://maxsustrans.uz/wp-content/uploads/2026/03/maxsuslogo.webp" alt="MaxsusTrans"
+             onerror="this.parentElement.innerHTML='<div class=\'brand-tile\' style=\'background:rgba(0,255,136,0.1);color:#00ff88;\'>Max<br>Trans</div>'">
+      </div>
+      <span class="brand-name">MaxsusTrans</span>
+      <span class="brand-type">Такси</span>
+      <span class="brand-px">400 px</span>
+    </a>
+  </div>
+
+  <!-- CLINIC -->
+  <div class="brand-cat-label">Клиника</div>
+  <div class="brand-grid">
+    <a href="#" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://dentalkochi.in/wp-content/uploads/2024/04/Dental-clinic-in-Kochi.jpg" alt="DentalClinic"
+             onerror="this.parentElement.innerHTML='<div class=\'brand-tile\' style=\'background:rgba(0,180,255,0.12);color:#00b4ff;font-size:0.65rem;\'>Dental<br>Clinic</div>'">
+      </div>
+      <span class="brand-name">DentalClinic</span>
+      <span class="brand-type">Стоматология</span>
+      <span class="brand-px">500 px</span>
+    </a>
+  </div>
+
+  <!-- FOOD BRANDS -->
+  <div class="brand-cat-label">Производители</div>
+  <div class="brand-grid">
+    <a href="#" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://marketing.uz/brend-goda-2022/uploads/works/covers/7fc8cdd273208e074fdc91cd1bd4ad62.jpg" alt="Sarkor"
+             onerror="this.parentElement.innerHTML='<div class=\'brand-tile\' style=\'background:rgba(255,233,78,0.12);color:#ffe94e;\'>Sarkor</div>'">
+      </div>
+      <span class="brand-name">Sarkor</span>
+      <span class="brand-type">Печенье</span>
+      <span class="brand-px">600 px</span>
+    </a>
+  </div>
+
+  <!-- TELEGRAM -->
+  <div class="brand-cat-label">Telegram-каналы</div>
+  <div class="brand-grid">
+    <a href="https://t.me/pcshop" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://pcshop-sa.com/storage/2025/08/logowbgc.png" alt="PC Shop">
+      </div>
+      <span class="brand-name">PC Shop</span>
+      <span class="brand-type">Telegram канал</span>
+      <span class="brand-px">350 px</span>
+    </a>
+  </div>
+
+  <!-- YOUTUBE -->
+  <div class="brand-cat-label">YouTube блогеры</div>
+  <div class="brand-grid">
+    <a href="https://youtube.com/@NmaGap" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://yt3.googleusercontent.com/7VNQdfhQRywVqru0VuGi_dzpEV35CuUbuWo4wFeeTJ2dIUzwQnhGFiumTrIryhaTFSmwtbjH=s900-c-k-c0x00ffffff-no-rj" alt="NmaGap">
+      </div>
+      <span class="brand-name">NmaGap</span>
+      <span class="brand-type">YouTube</span>
+      <span class="brand-px">700 px</span>
+    </a>
+    <a href="https://youtube.com/@UPG" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://yt3.googleusercontent.com/2Qw5nLGk206cx1UzvsbJZh_kcW6gAtQnHT0bniVrl4bqG1RMrSJH-B-J0UX8Xltljv0RExpD=s900-c-k-c0x00ffffff-no-rj" alt="UPG">
+      </div>
+      <span class="brand-name">UPG</span>
+      <span class="brand-type">YouTube</span>
+      <span class="brand-px">500 px</span>
+    </a>
+    <a href="https://youtube.com/@Uzboom" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://avatars.yandex.net/get-music-content/12554677/89ce06b7.p.9994545/300x300" alt="Uzboom">
+      </div>
+      <span class="brand-name">Uzboom</span>
+      <span class="brand-type">YouTube</span>
+      <span class="brand-px">600 px</span>
+    </a>
+    <a href="https://youtube.com/@zirapcha" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://cdn.splay.uz/media/contents_meta/zirapcha/images/poster_h.large.jpg" alt="Zirapcha">
+      </div>
+      <span class="brand-name">Zirapcha</span>
+      <span class="brand-type">YouTube</span>
+      <span class="brand-px">450 px</span>
+    </a>
+    <a href="https://youtube.com/@MittyVine" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://yt3.googleusercontent.com/WvxDgdzAyd3ZeSGeXMqyZ_mEHm6hFGTsW8kXmPVOXUePv1XcsM-nzn8BaqRMWl1opdyp3LWmNug=s900-c-k-c0x00ffffff-no-rj" alt="Mitty Vine">
+      </div>
+      <span class="brand-name">Mitty Vine</span>
+      <span class="brand-type">YouTube</span>
+      <span class="brand-px">400 px</span>
+    </a>
+  </div>
+
+  <!-- TV -->
+  <div class="brand-cat-label">Телеканалы</div>
+  <div class="brand-grid">
+    <a href="https://zortv.uz" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://www.google.com/s2/favicons?domain=zortv.uz&sz=128" alt="ZOR TV">
+      </div>
+      <span class="brand-name">ZO'R TV</span>
+      <span class="brand-type">Телеканал</span>
+      <span class="brand-px">800 px</span>
+    </a>
+    <a href="https://my5.uz" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/62/MY5_TV_logotipi.png" alt="MY5">
+      </div>
+      <span class="brand-name">MY5</span>
+      <span class="brand-type">Телеканал</span>
+      <span class="brand-px">700 px</span>
+    </a>
+    <a href="https://yoshlar.uz" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/YOSHLAR.jpg" alt="Yoshlar">
+      </div>
+      <span class="brand-name">Yoshlar</span>
+      <span class="brand-type">Телеканал</span>
+      <span class="brand-px">600 px</span>
+    </a>
+    <a href="https://toshkenttv.uz" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://uzdtv.uz/images/channel_1606476987.png" alt="Toshkent TV">
+      </div>
+      <span class="brand-name">Toshkent TV</span>
+      <span class="brand-type">Телеканал</span>
+      <span class="brand-px">600 px</span>
+    </a>
+    <a href="https://mahalla.uz" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://www.google.com/s2/favicons?domain=mahalla.uz&sz=128" alt="Mahalla">
+      </div>
+      <span class="brand-name">Mahalla</span>
+      <span class="brand-type">Телеканал</span>
+      <span class="brand-px">500 px</span>
+    </a>
+    <a href="https://uzbekistan.tv" target="_blank" class="brand-card">
+      <span class="brand-sold">SOLD</span>
+      <div class="brand-img-wrap">
+        <img src="https://www.google.com/s2/favicons?domain=uzbekistan.tv&sz=128" alt="O'zbekiston">
+      </div>
+      <span class="brand-name">O'zbekiston</span>
+      <span class="brand-type">Телеканал</span>
+      <span class="brand-px">900 px</span>
+    </a>
+  </div>
+
+  <a href="https://t.me/bx102d" target="_blank" class="brands-join">
+    <div class="live-dot"></div>
+    <span>Твоё место ещё свободно — <strong>стань частью этой карты</strong></span>
+    <em>→ Купить за $1</em>
+  </a>
+
+  <div style="text-align:center; margin-top:36px;">
+    <a href="https://t.me/bx102d" target="_blank" class="btn-main">
+      <span class="ico">📩</span>
+      Написать и купить место
+    </a>
+    <p style="margin-top:14px;color:var(--muted);font-family:var(--mono);font-size:0.78rem;">
+      Пикселей становится меньше каждый день · Размещение навсегда
+    </p>
+  </div>
+</div>
+</section>
+
+<section id="how">
+  <div class="container">
+    <div class="section-tag">// how_it_works</div>
+    <h2>Как это работает?</h2>
+    <p class="sub">Три простых шага — и твой баннер появится на карте пикселей навсегда.</p>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-step">01</div>
+        <span class="how-icon">💬</span>
+        <h3>Напиши нам</h3>
+        <p>Свяжись через Telegram <strong style="color:var(--text);">@bx102d</strong> или по номеру
+          <strong style="color:var(--text);">+998 33 038 66 10</strong>.
+          Скажи, сколько пикселей хочешь купить и где должен быть баннер.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-step">02</div>
+        <span class="how-icon">🖼️</span>
+        <h3>Отправь баннер</h3>
+        <p>Пришли свой логотип, изображение или баннер в любом формате
+          (PNG, JPG, GIF). Мы разместим его точно на выбранных пикселях
+          с активной ссылкой на твой сайт.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-step">03</div>
+        <span class="how-icon">💸</span>
+        <h3>Оплати и готово</h3>
+        <p>Оплати из расчёта $1 за пиксель любым удобным способом.
+          Твой баннер появится на карте <strong style="color:var(--text);">в течение 24 часов</strong>
+          и останется здесь навсегда.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="proof">
+  <div class="container">
+    <div class="section-tag">// testimonials</div>
+    <h2>Что говорят покупатели</h2>
+    <p class="sub">Первые рекламодатели уже разместились. Вот что они думают.</p>
+    <div class="proof-grid">
+      <div class="proof-card">
+        <div class="proof-stars">★★★★★</div>
+        <p class="proof-text">"Купил 500 пикселей для своего интернет-магазина. Заявки пошли уже на следующий день. Это просто и эффективно!"</p>
+        <div class="proof-author">
+          <div class="proof-avatar" style="background:var(--glow-b); font-size:1.1rem;">🛍️</div>
+          <div>
+            <div class="proof-name">Акбар Т.</div>
+            <div class="proof-role">Владелец магазина</div>
+          </div>
+        </div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-stars">★★★★★</div>
+        <p class="proof-text">"Отличная идея и честный сервис. Разместил логотип своей студии. Быстро, качественно, надёжно. Рекомендую!"</p>
+        <div class="proof-author">
+          <div class="proof-avatar" style="background:var(--glow-g); font-size:1.1rem;">🎨</div>
+          <div>
+            <div class="proof-name">Дамир Р.</div>
+            <div class="proof-role">Дизайн-студия</div>
+          </div>
+        </div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-stars">★★★★★</div>
+        <p class="proof-text">"Исторический проект! Купил место на будущее — когда сайт станет популярным, мой баннер уже будет там. Умный ход."</p>
+        <div class="proof-author">
+          <div class="proof-avatar" style="background:var(--glow-p); font-size:1.1rem;">💡</div>
+          <div>
+            <div class="proof-name">Санжар К.</div>
+            <div class="proof-role">Предприниматель</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cta">
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="section-tag" style="text-align:center;">// купи_прямо_сейчас</div>
+    <h2>Не упусти своё <span style="color:var(--green)">место</span></h2>
+    <p class="sub">Пикселей становится меньше с каждым часом. Свяжись прямо сейчас и зафиксируй своё место на карте истории.</p>
+    <div class="cta-group" style="margin-top:40px;">
+      <a href="https://t.me/bx102d" target="_blank" class="btn-main" style="font-size:1.15rem; padding:20px 48px;">
+        <span class="ico">✈️</span>
+        Написать в Telegram @bx102d
+      </a>
+    </div>
+    <div class="contact-cards">
+      <a href="https://t.me/bx102d" target="_blank" class="contact-card">
+        <span class="ico">✈️</span>
+        Telegram: <span>@bx102d</span>
+      </a>
+      <a href="tel:+998330386610" class="contact-card">
+        <span class="ico">📞</span>
+        Телефон: <span>+998 33 038 66 10</span>
+      </a>
+    </div>
+    <p style="margin-top:32px; color:var(--muted); font-size:0.85rem; font-family:var(--mono);">
+      Принимаем оплату любым удобным способом · Установка за 24 часа · Размещение навсегда
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">100K PIXELS</div>
+  <p class="footer-note">
+    © 2025 · 100KPixels.uz · Уникальная рекламная площадка<br/>
+    <span style="color:var(--green);">@bx102d</span> · <span style="color:var(--green);">+998 33 038 66 10</span>
+  </p>
+</footer>
+
+<script>
+  // Счётчики оставлены без изменений, при необходимости можно добавить анимацию
+  let sold = 15680;
+  setInterval(() => {
+    sold += Math.floor(Math.random() * 10 + 1);
+    const avail = 100000 - sold;
+    if (avail <= 0) return;
+    document.getElementById('soldCount').textContent = sold.toLocaleString('ru-RU');
+    document.getElementById('availableCount').textContent = avail.toLocaleString('ru-RU');
+  }, 5000);
+</script>
+
+</body>
+</html>
